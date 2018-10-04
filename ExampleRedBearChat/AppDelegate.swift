@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BLEDelegate {
     
     var bleShield = BLE()
     
-    // MARK: BLE Delegates Functions
+    // MARK: ====== BLE Delegates Functions ======
     func bleDidUpdateState() {
         // currently unused
     }
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BLEDelegate {
         }
     }
     
-    // MARK: App Delegate Functions
+    // MARK: ====== App Delegate Functions ======
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

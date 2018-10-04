@@ -11,7 +11,7 @@ import UIKit
 // MARK: CHANGE 2: No longer should this view be a BLE delegate
 class ViewController: UIViewController, BLEDelegate {
     
-    // MARK: VC Properties
+    // MARK: ====== VC Properties ======
     // MARK: CHANGE 3: No longer have BLE instantiate itself. Instead: Add support for lazy instantiation (like we did in the table view controller)
     var bleShield = BLE()
     var rssiTimer = Timer()
@@ -60,10 +60,12 @@ class ViewController: UIViewController, BLEDelegate {
         }
     }
 
-    // MARK: Delegate Methods
+    // MARK: ====== BLE Delegate Methods ======
     func bleDidUpdateState() {
         
     }
+    
+    
     // MARK: CHANGE 7: use function from "BLEDidConnect" notification
     // in this function, update a label on the UI to have the name of the active peripheral
     // you might be interested in the following method (from objective C):
@@ -73,7 +75,7 @@ class ViewController: UIViewController, BLEDelegate {
         print("Notification arrived that BLE Connected")
     }
     
-    // OLD DELEGATION CONNECT FUNCTION
+    // OLD DELEGATION CONNECT FUNCTION (for your reference in creating new method)
     func bleDidConnectToPeripheral() {
         self.spinner.stopAnimating()
         self.buttonConnect.setTitle("Disconnect", for: .normal)
@@ -85,25 +87,20 @@ class ViewController: UIViewController, BLEDelegate {
 
     }
     
-    // OLD DELEGATION DISCONNECT FUNCTION
-    func bleDidDisconnectFromPeripheral() {
-        // MARK: CHANGE 5.b: remove all accesses of the "connect button"
-        self.buttonConnect.setTitle("Connect", for: .normal)
-        rssiTimer.invalidate()
-    }
     
     // NEW  DISCONNECT FUNCTION
     @objc func onBLEDidDisconnectNotification(notification:Notification){
         print("Notification arrived that BLE Disconnected a Peripheral")
     }
     
-    // OLD FUNCTION: parse the received data using BLEDelegate protocol
-    func bleDidReceiveData(data: Data?) {
-        // this data could be anything, here we know its an encoded string
-        let s = String(bytes: data!, encoding: String.Encoding.utf8)
-        labelText.text = s
-
+    // OLD DELEGATION DISCONNECT FUNCTION (for your reference in creating new method)
+    func bleDidDisconnectFromPeripheral() {
+        // MARK: CHANGE 5.b: remove all accesses of the "connect button"
+        self.buttonConnect.setTitle("Connect", for: .normal)
+        rssiTimer.invalidate()
     }
+    
+    
     
     // NEW FUNCTION EXAMPLE: this was written for you to show how to change to a notification based model
     @objc func onBLEDidRecieveDataNotification(notification:Notification){
@@ -112,7 +109,15 @@ class ViewController: UIViewController, BLEDelegate {
         self.labelText.text = s
     }
     
-    // MARK: User initiated Functions
+    // OLD FUNCTION: parse the received data using BLEDelegate protocol
+    func bleDidReceiveData(data: Data?) {
+        // this data could be anything, here we know its an encoded string
+        let s = String(bytes: data!, encoding: String.Encoding.utf8)
+        labelText.text = s
+        
+    }
+    
+    // MARK: ====== User initiated Functions ======
     // MARK: CHANGE 1.b: change this as you no longer need to search for perpipherals in this view controller
     @IBAction func buttonScanForDevices(_ sender: UIButton) {
         
