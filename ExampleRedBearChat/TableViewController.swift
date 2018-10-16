@@ -86,6 +86,7 @@ class TableViewController: UITableViewController {
         // MARK: CHANGE 6: add code heblre to connect to the selected peripheral
         
 //        if(bleShield.peripherals.name == peripheral.name) {
+        // can put in block of code andd run in 100 ms
         print("peripheral: ", peripheral)
         self.bleShield.connectToPeripheral(peripheral: peripheral)
         print("connected to peripheral")

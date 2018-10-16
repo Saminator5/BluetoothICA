@@ -57,8 +57,11 @@ class ViewController: UIViewController {
     }
     
     func readRSSITimer(timer:Timer){
+        print("in timer")
         bleShield.readRSSI { (number, error) in
             // when RSSI read is complete, display it
+            
+            print("setting text")
             self.rssiLabel.text = String(format: "%.1f",(number?.floatValue)!)
         }
     }
@@ -75,7 +78,12 @@ class ViewController: UIViewController {
     // NSString *deviceName =[notification.userInfo objectForKey:@"deviceName"];
     // NEW  CONNECT FUNCTION
     @objc func onBLEDidConnectNotification(notification:Notification){
+        self.spinner.stopAnimating()
+
         print("Notification arrived that BLE Connected")
+        rssiTimer = Timer.scheduledTimer(withTimeInterval: 1.0,
+                                         repeats: true,
+                                         block: self.readRSSITimer)
         self.labelText.text = notification.name.rawValue;
     // userInfo?["NSFieldEditor"] as! String
     }
@@ -152,6 +160,7 @@ class ViewController: UIViewController {
 //        }
         
         // give connection feedback to the user
+        print("starting spinner animation")
         self.spinner.startAnimating()
     }
     
