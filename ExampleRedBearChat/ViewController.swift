@@ -73,6 +73,8 @@ class ViewController: UIViewController {
     // NEW  CONNECT FUNCTION
     @objc func onBLEDidConnectNotification(notification:Notification){
         print("Notification arrived that BLE Connected")
+        self.labelText.text = notification.name.rawValue;
+    // userInfo?["NSFieldEditor"] as! String
     }
     
     // OLD DELEGATION CONNECT FUNCTION (for your reference in creating new method)
