@@ -79,9 +79,9 @@ class TableViewController: UITableViewController {
         
         // MARK: CHANGE 6: add code heblre to connect to the selected peripheral
         
-        if(bleShield.peripherals.name == peripheral.name) {
-            self.bleShield.connectToPerihperal(peripheral)
-        }
+//        if(bleShield.peripherals.name == peripheral.name) {
+        self.bleShield.connectToPeripheral(peripheral: peripheral)
+        //}
     }
 
 }
