@@ -12,10 +12,10 @@ class TableViewController: UITableViewController {
 
     // on access, setup this variable
     lazy var bleShield:BLE = (UIApplication.shared.delegate as! AppDelegate).bleShield
-        
+    var globalPeripheralName = "";
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.globalPeripheralName = ""
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(scanForDevices), for: .valueChanged)
         self.refreshControl = refresh
@@ -24,6 +24,11 @@ class TableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+//
+     override func prepare(for segue: UIStoryboardSegue!, sender: Any?) {
+        var nextVC = segue.destination as? ViewController
+        nextVC?.connectedTo = self.globalPeripheralName
     }
 
 
@@ -38,7 +43,7 @@ class TableViewController: UITableViewController {
     }
     
     @objc func scanForDevices() {
-        
+        print("Scanning for devices...")
         // disconnect from any peripherals
         for peripheral in bleShield.peripherals {
             if(peripheral.state == .connected){
@@ -67,6 +72,7 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "simpleCell", for: indexPath)
 
         let peripheral = self.bleShield.peripherals[indexPath.row]
+        print("peripheral name: ", peripheral.name!)
         cell.textLabel?.text = peripheral.name!
         cell.detailTextLabel?.text = peripheral.identifier.uuidString
 
@@ -80,7 +86,11 @@ class TableViewController: UITableViewController {
         // MARK: CHANGE 6: add code heblre to connect to the selected peripheral
         
 //        if(bleShield.peripherals.name == peripheral.name) {
+        print("peripheral: ", peripheral)
         self.bleShield.connectToPeripheral(peripheral: peripheral)
+        print("connected to peripheral")
+        self.globalPeripheralName = peripheral.name!
+        print("global: ", self.globalPeripheralName)
         //}
     }
 

@@ -19,9 +19,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var labelText: UILabel!
     @IBOutlet weak var textBox: UITextField!
     @IBOutlet weak var rssiLabel: UILabel!
-    
+    @IBOutlet weak var connectedToLabel: UILabel!
+    var connectedTo = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.connectedToLabel.text = connectedTo
         // MARK: CHANGE 1.a: change this as you no longer need to instantiate the BLE Object like this
         //   you should not let this ViewController be the BLE delegate
         
@@ -31,6 +33,7 @@ class ViewController: UIViewController {
         //  the code below and what the notificaitons mean.
         // These selector functions should be created from the old BLEDelegate functions
         // One example has already been completed for you on the receiving of data function
+        
         
         // BLE Connect Notification
         NotificationCenter.default.addObserver(self,
