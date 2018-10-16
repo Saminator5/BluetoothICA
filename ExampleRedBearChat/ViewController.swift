@@ -8,15 +8,14 @@
 
 import UIKit
 
-// MARK: CHANGE 2: No longer should this view be a BLE delegate
-class ViewController: UIViewController, BLEDelegate {
+// MARK: CHANGE 2: No longer should this view be a BLE delegate DONE
+class ViewController: UIViewController {
     
     // MARK: ====== VC Properties ======
-    // MARK: CHANGE 3: No longer have BLE instantiate itself. Instead: Add support for lazy instantiation (like we did in the table view controller)
-    var bleShield = BLE()
+    // MARK: CHANGE 3: No longer have BLE instantiate itself. Instead: Add support for lazy instantiation (like we did in the table view controller) DONE
+    lazy var bleShield = (UIApplication.shared.delegate as! AppDelegate).bleShield
     var rssiTimer = Timer()
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var buttonConnect: UIButton!
     @IBOutlet weak var labelText: UILabel!
     @IBOutlet weak var textBox: UITextField!
     @IBOutlet weak var rssiLabel: UILabel!
@@ -25,7 +24,8 @@ class ViewController: UIViewController, BLEDelegate {
         super.viewDidLoad()
         // MARK: CHANGE 1.a: change this as you no longer need to instantiate the BLE Object like this
         //   you should not let this ViewController be the BLE delegate
-        bleShield.delegate = self
+        
+       // bleShield.delegate = self NOTE ASK PROFESSOR IMPORTANT
         
         // MARK: CHANGE 4: Nothing to actually change here, just get familiar with
         //  the code below and what the notificaitons mean.
@@ -78,7 +78,7 @@ class ViewController: UIViewController, BLEDelegate {
     // OLD DELEGATION CONNECT FUNCTION (for your reference in creating new method)
     func bleDidConnectToPeripheral() {
         self.spinner.stopAnimating()
-        self.buttonConnect.setTitle("Disconnect", for: .normal)
+        // self.buttonConnect.setTitle("Disconnect", for: .normal)
         
         // Schedule to read RSSI every 1 sec.
         rssiTimer = Timer.scheduledTimer(withTimeInterval: 1.0,
@@ -96,7 +96,7 @@ class ViewController: UIViewController, BLEDelegate {
     // OLD DELEGATION DISCONNECT FUNCTION (for your reference in creating new method)
     func bleDidDisconnectFromPeripheral() {
         // MARK: CHANGE 5.b: remove all accesses of the "connect button"
-        self.buttonConnect.setTitle("Connect", for: .normal)
+       // self.buttonConnect.setTitle("Connect", for: .normal)
         rssiTimer.invalidate()
     }
     
@@ -137,12 +137,14 @@ class ViewController: UIViewController, BLEDelegate {
         
         //start search for peripherals with a timeout of 3 seconds
         // this is an asynchronous call and will return before search is complete
-        if(bleShield.startScanning(timeout: 3.0)){
-            // after three seconds, try to connect to first peripheral
-            Timer.scheduledTimer(withTimeInterval: 3.0,
-                                 repeats: false,
-                                 block: self.connectTimer)
-        }
+        
+        // CHANGE 1.B
+//        if(bleShield.startScanning(timeout: 3.0)){
+//            // after three seconds, try to connect to first peripheral
+//            Timer.scheduledTimer(withTimeInterval: 3.0,
+//                                 repeats: false,
+//                                 block: self.connectTimer)
+//        }
         
         // give connection feedback to the user
         self.spinner.startAnimating()
@@ -153,8 +155,9 @@ class ViewController: UIViewController, BLEDelegate {
     func connectTimer(timer:Timer){
         
         if(bleShield.peripherals.count > 0) {
+            // CHANGE 1.C
             // connect to the first found peripheral
-            bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
+            // bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
         }
         else {
             self.spinner.stopAnimating()

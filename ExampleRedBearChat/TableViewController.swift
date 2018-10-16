@@ -77,7 +77,11 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var peripheral = self.bleShield.peripherals[indexPath.row]
         
-        // MARK: CHANGE 6: add code here to connect to the selected peripheral
+        // MARK: CHANGE 6: add code heblre to connect to the selected peripheral
+        
+        if(bleShield.peripherals.name == peripheral.name) {
+            self.bleShield.connectToPerihperal(peripheral)
+        }
     }
 
 }
